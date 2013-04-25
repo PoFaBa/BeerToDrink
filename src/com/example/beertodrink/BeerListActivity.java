@@ -12,7 +12,7 @@ import android.app.Activity;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+
 
 public class BeerListActivity extends Activity {
 
