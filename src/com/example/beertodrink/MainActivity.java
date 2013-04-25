@@ -16,8 +16,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         
-        final Button loginButton = (Button) findViewById(R.id.BeerList);
-        loginButton.setOnClickListener(new OnClickListener() {
+        final Button listeBiereButton = (Button) findViewById(R.id.BeerList);
+        listeBiereButton.setOnClickListener(new OnClickListener() {
       			
         @Override
         public void onClick(View v) {
