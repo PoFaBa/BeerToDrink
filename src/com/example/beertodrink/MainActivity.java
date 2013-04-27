@@ -1,9 +1,8 @@
 package com.example.beertodrink;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,7 +15,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         
-        final Button listeBiereButton = (Button) findViewById(R.id.BeerList);
+        Button listeBiereButton = (Button) findViewById(R.id.BeerList);
         listeBiereButton.setOnClickListener(new OnClickListener() {
       			
         @Override
@@ -25,14 +24,17 @@ public class MainActivity extends Activity {
       	startActivity(intent);
       	}
       });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        
+        Button essai = (Button) findViewById(R.id.button1);
+        essai.setOnClickListener(new OnClickListener() {
+      			
+        @Override
+        public void onClick(View v) {
+      	Intent intent2 = new Intent(MainActivity.this, essai.class);
+      	startActivity(intent2);
+      	}
+      });
+        
     }
     
 }
