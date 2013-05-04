@@ -1,93 +1,82 @@
 package com.example.beertodrink;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
 public class BeerListActivity extends Activity {
+	String result1[];
+	String result = "";
+	InputStream is = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beer_list);
         
-        //Récupération des données dans la bdd
-        // Information d'accès à la base de données
-        String url = "jdbc:mysql://localhost/BeerToDrink";
-        String login = "root";
-        String passwd = "";
-        Connection cn =null;
-        Statement st =null;
-        ResultSet rs =null;
-        try {
-        // Etape 1 : Chargement du driver
-        Class.forName("com.mysql.jdbc.Driver");
-        // Etape 2 : récupération de la connexion
-        cn = DriverManager.getConnection(url, login, passwd);
-       
-       
-        // Etape 3 : Création d'un statement
-        st = cn.createStatement();
-        String sql = "SELECT NomBiere     FROM  Biere ORDER BY NomBiere ASC";
-       
-        // Etape 4 : exécution requête
-        rs = (ResultSet) st.executeQuery(sql);
-       
-        // Etape 5: parcours resultatSet
+      
+        ListView listview = (ListView) findViewById(R.id.listview);
         
-        rs.last();
-        String[] out = new String[rs.getRow()];
+        // Envoyer la requête au script PHP.
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		
+ 		// Envoie de la commande http
+ 		try{
+ 			HttpClient httpclient = new DefaultHttpClient();
+ 			HttpPost httppost = new HttpPost("http://192.168.0.11/Biere.php");
+ 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+ 			HttpResponse response = httpclient.execute(httppost);
+ 			HttpEntity entity = response.getEntity();
+ 			is = entity.getContent();
 
-        rs.beforeFirst();
-        int n=0;
-        while (rs.next()) {
-            out[n]=rs.getString(1);
-            n++;
-          }
-       // Etape 6 ajout des valeurs dans la listView
-        
-        final ListView listview = (ListView) findViewById(R.id.listview);
-        final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < out.length; ++i) {
-          list.add(out[i]);
-        }
-        
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-        		this,
-        		R.layout.activity_beer_list,
-        		out);
-        listview.setAdapter(adapter);
-        
-       
-        rs = (ResultSet) st.executeQuery(sql);
-        
-        }
-        catch (SQLException e) {
-        e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
-        e.printStackTrace();
-        }
-        finally {
-        try { // Etape 6 libérer ressources de la mémoire.
-        cn.close();
-        st.close();
-        }
-        catch (SQLException e) {
-        e.printStackTrace();
-        }
-        }
-        
-        
+ 		}catch(Exception e){
+ 			Log.e("log_tag", "Error in http connection " + e.toString());
+ 		}
+ 		
+ 		//convert response to string
+ 		 try{
+ 		         BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+ 		         StringBuilder sb = new StringBuilder();
+ 		         String line = null;
+ 		         while ((line = reader.readLine()) != null) {
+ 		                 sb.append(line + "\n");
+ 		         }
+ 		         is.close();
+ 		         result=sb.toString();
+
+ 		         JSONArray jArray = new JSONArray(result);
+
+ 		             for(int i=0;i<jArray.length();i++){
+ 		                     JSONObject json_data = jArray.getJSONObject(i);
+
+ 		                     result1[i] = json_data.getString("nome");
+
+ 		                  } 
+
+ 		             listview.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, result1));  
+ 		       }
+ 		 catch(Exception e){
+ 		         Log.e("log_tag", "Error converting result "+e.toString());
+ 		         }
 }
-    
 }
+
+
