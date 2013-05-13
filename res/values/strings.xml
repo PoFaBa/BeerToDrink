@@ -3,6 +3,18 @@
 
     <string name="app_name">BeerToDrink</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="boutonbiere">Trouver une bière</string>
+    <string name="boutonbar">Trouver un bar</string>
+    <string name="nombiere">Nom de la bière</string>
+    <string name="alcoolemie">Alcoolémie</string>
+    <string name="typebiere">Type de bière</string>
+    <string name="heineken">Heineken</string>
+    <string name="degre">5</string>
+    <string name="degree">5%</string>
+    <string name="blonde">Blonde</string>
+    <string name="affligem">Affligem</string>
+    <string name="degree2">7%</string>
+    <string name="nombar">Nom du bar</string>
+    <string name="adresse">Adresse du bar</string>
 
 </resources>

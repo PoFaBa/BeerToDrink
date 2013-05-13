@@ -28,7 +28,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-public class BeerListActivity extends Activity{
+public class BarListActivity extends Activity{
 
 	/** Called when the activity is first created. */
 	public static final String strURL = "http://10.0.2.2:8080/mesRequestes/Alarm.php";    
@@ -36,7 +36,7 @@ public class BeerListActivity extends Activity{
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_beer_list);
+        setContentView(R.layout.activity_bar_list);
         new AsyncTask<Void,Void,List<Map<String,Object>>>()
         {
 			@Override
@@ -79,9 +79,9 @@ public class BeerListActivity extends Activity{
                       JSONObject json_data = jArray.getJSONObject(i);  
  
                        Map<String, Object> map = new HashMap<String, Object>();
-                       map.put("NomBiere", json_data.getString("NomBiere"));
+                       map.put("NomBar", json_data.getString("NomBar"));
                        res.add(map); 
-                       Log.i("log_tag","NomBiere: "+json_data.getString("NomBiere"));  
+                       Log.i("log_tag","NomBar: "+json_data.getString("NomBar"));  
                    }  
                }catch(JSONException e)
                {  
@@ -91,23 +91,18 @@ public class BeerListActivity extends Activity{
 			}
 			protected void onPostExecute(List<Map<String, Object>> res) {
 				ListView list = (ListView) findViewById(R.id.list);
-				list.setAdapter(new SimpleAdapter(BeerListActivity.this, res,
-						R.layout.list_item, new String[] {"NomBiere"}, new int[] {R.id.text1 }));
+				list.setAdapter(new SimpleAdapter(BarListActivity.this, res,
+						R.layout.list_item, new String[] {"NomBar"}, new int[] {R.id.text1 }));
 				
 				list.setOnItemClickListener(new OnItemClickListener(){
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View view,int position, long arg3) {
 						// getting values from selected ListItem
 		                String name = ((TextView) view.findViewById(R.id.text1)).getText().toString();		               
-		                if (name=="Heineken"){		                 
+		                if (name=="Bar a thym"){		                 
 		                // Starting new intent
-		                Intent intent = new Intent(getApplicationContext(), SingleBeerActivity.class);
+		                Intent intent = new Intent(getApplicationContext(), SingleBarActivity.class);
 		                startActivity(intent);
-		                };
-		                if (name=="Affligem"){
-		                	Intent intent2 = new Intent(getApplicationContext(), SingleBeerActivity2.class);
-			                startActivity(intent2);
-		                	
 		                };
 					}
 	 
@@ -117,5 +112,7 @@ public class BeerListActivity extends Activity{
 	        }.execute(); 
 	    }}
     
-
-
+ 
+	 
+ 
+      

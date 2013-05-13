@@ -25,12 +25,13 @@ public class MainActivity extends Activity {
       	}
       });
         
-        Button essai = (Button) findViewById(R.id.button1);
-        essai.setOnClickListener(new OnClickListener() {
+        
+        Button listeBarButton = (Button) findViewById(R.id.BarList);
+        listeBarButton.setOnClickListener(new OnClickListener() {
       			
         @Override
         public void onClick(View v) {
-      	Intent intent2 = new Intent(MainActivity.this, essai.class);
+      	Intent intent2 = new Intent(MainActivity.this, BarListActivity.class);
       	startActivity(intent2);
       	}
       });
